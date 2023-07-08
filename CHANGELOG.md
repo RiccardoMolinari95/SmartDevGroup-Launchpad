@@ -20,12 +20,12 @@ straightforward as possible.
 
 ## [0.0.2] - 07-07-2023 
 - Added
-	PUBLIC_ADDRESS .env support
-	CHANGELOG.md
+	- PUBLIC_ADDRESS .env support
+	- CHANGELOG.md
 - Fixed
-	Fix prevent bug "ProviderError: invalid opcode: opcode 0x5f not defined" deploying on Mumbai
-
-
+	- Fix prevent bug "ProviderError: invalid opcode: opcode 0x5f not defined" deploying on Mumbai
+- Changed
+	- Changed delpoyed TestToken contract address on Mumbai
 
 ## [0.0.1] - 07-07-2023 
 Initial release
