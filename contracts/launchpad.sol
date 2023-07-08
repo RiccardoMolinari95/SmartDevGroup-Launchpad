@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.0;
 
+import "hardhat/console.sol";
+
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
@@ -12,8 +14,12 @@ contract Launchpad is Ownable, ReentrancyGuard {
 
 	// EVENTS
 	event LaunchpoolCreated(address indexed sender, string nameTokenToDistribute, uint256 totalTokenToDistribute, uint256 stackingLength);
-	event TokensDeposited(address sender, uint256 amount, uint256 balance, uint256 daysStaking);
-	event Deposit(address indexed sender, uint amount, uint balance);
+	event tokenToDistributeDeposit(uint256 amount, uint256 totalTokenToDistribute);
+	event newStakeOrder(address indexed sender, uint256 amount, uint256 power, uint256 totalPower);
+	//event TokensDeposited(address sender, uint256 amount, uint256 balance, uint256 daysStaking);
+	//event Deposit(address indexed sender, uint amount, uint balance);
+
+
 
 	uint256 totalTokenToDistribute;						// contatore Token ancora da distribuire
 	string nameTokenToDistribute;						// nome Token ERC-20 da distribuire
@@ -26,14 +32,14 @@ contract Launchpad is Ownable, ReentrancyGuard {
 
 	mapping(uint256 => address ) public orderIDs;		// associa ogni ordine di staking all'address che lo ha effettuato
 
-	struct order {
-		uint32 tokenQuantity;
+	struct Order {
+		uint256 stakedAmount;							// quantità di coin/token staked
 		uint256 orderTime;								// timestamp
 		uint256 power;									// power = tokenQuantity * ( orderTime - startLP)
 		bool isClaimed;									// true se è già stato fatto il claim di questo ordine
 	}
 
-	order[] public orders;				// array dinamico di tutti gli ordini effettuati
+	Order[] public orders;								// array dinamico di tutti gli ordini effettuati
 
 
 	constructor(ERC20 _token, uint256 _startLP, uint256 _endLP) {
@@ -68,9 +74,44 @@ contract Launchpad is Ownable, ReentrancyGuard {
 		token.transferFrom(msg.sender, address(this), _amount);									// Trasferisco i token dal mittente al contratto
 
 		totalTokenToDistribute = totalTokenToDistribute + _amount;								// Aggiungo i token al totale dei token da distribuire
+
+		emit tokenToDistributeDeposit(_amount, totalTokenToDistribute);
 	}
 
+	function stake() public payable {
 
+		console.log("msg.value: ", msg.value);
+		console.log("startLP: ", startLP);
+		console.log("endLP: ", endLP);
+		console.log("block.timestamp: ", block.timestamp);
+		console.log("totalTokenToDistribute: ", totalTokenToDistribute);
+
+		require(msg.value > 0, "Cannot stake 0 MATIC");													// Controllo che non si stia cercando di depositare 0 MATIC
+		require(block.timestamp >= startLP, "Launchpool not started yet");								// Controllo che il launchpool sia iniziato
+		require(block.timestamp <= endLP, "Launchpool ended");											// Controllo che il launchpool non sia ancora finito	
+		require(totalTokenToDistribute > 0, "No tokens to distribute");									// Controllo che ci siano ancora token da distribuire
+
+		uint256 orderID = orders.length;																// Assegno l'ID dell'ordine
+		console.log("orderID: ", orderID);
+
+		// Creo l'order
+		Order memory senderOrder;																		// Creo un nuovo ordine
+		senderOrder.stakedAmount = uint256(msg.value);													// Assegno la quantità di MATIC staked
+		senderOrder.orderTime = block.timestamp;														// Assegno il timestamp dell'ordine
+		senderOrder.power = senderOrder.stakedAmount * (senderOrder.orderTime - startLP);				// Calcolo il power dell'ordine
+		senderOrder.isClaimed = false;																	// Assegno il valore false al claim
+		
+		// Inserisco l'order nella lista degli order
+		orders.push(senderOrder);																		// Aggiungo l'ordine all'array degli ordini
+
+		// Assegno l'order all'address che ha effettuato lo stake
+		orderIDs[orderID] = msg.sender;																	// Associo l'ID dell'ordine all'address che ha effettuato lo stake
+
+		// Aggiorno il totale dei power
+		TotalPower = TotalPower + senderOrder.power;												// Aggiungo il power al totale dei power
+
+		emit newStakeOrder(msg.sender, senderOrder.stakedAmount, senderOrder.power, TotalPower);
+	}
 
 
 /*

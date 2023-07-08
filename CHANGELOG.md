@@ -17,14 +17,19 @@ straightforward as possible.
   PATCH Ticket title goes here.
 
 ---------------------------------------------------------------------------------------------------------
-## [0.0.4] - 07-07-2023 
+## [0.0.5] - 08-07-2023
+### Added
+	- [launchpool.sol] 
+		- function stake()
+
+## [0.0.4] - 08-07-2023 
 ### Added
 	- [launchpool.sol] 
 		- function depositTokenToDistribute()
 	- [README.md]
 		- Operation list
 
-## [0.0.3] - 07-07-2023 
+## [0.0.3] - 08-07-2023 
 ### Added
 	- [launchpool.sol] 
 		- Data Structures: totalTokenToDistribute, nameTokenToDistribute, symbolTokenToDistribute, decimalsTokenToDistribute, stakingLength, startLP, endLP, TotalPower, order, orders, orderIDs
@@ -37,7 +42,7 @@ straightforward as possible.
 	- [deploy_TestToken.ts]
 		Renamed TokenTest in TokenTestFactory
 
-## [0.0.2] - 07-07-2023 
+## [0.0.2] - 08-07-2023 
 ### Added
 	- PUBLIC_ADDRESS .env support
 	- CHANGELOG.md
