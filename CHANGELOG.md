@@ -17,6 +17,18 @@ straightforward as possible.
   PATCH Ticket title goes here.
 
 ---------------------------------------------------------------------------------------------------------
+## [0.0.3] - 07-07-2023 
+- Added
+	- [launchpool.sol] 
+		- Data Structures: totalTokenToDistribute, nameTokenToDistribute, symbolTokenToDistribute, decimalsTokenToDistribute, stakingLength, startLP, endLP, TotalPower, order, orders, orderIDs
+		- event LaunchpoolCreated
+
+- Changed
+	- [launchpool.sol] 
+		- IERC20 to ERC20 to support of .name(), .symbol(), .decimals() functions
+		- daysStaking in stakingTime to support seconds precision
+	- [deploy_TestToken.ts]
+		Renamed TokenTest in TokenTestFactory
 
 ## [0.0.2] - 07-07-2023 
 - Added

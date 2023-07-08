@@ -8,8 +8,8 @@ import { ethers } from "hardhat";
 	console.log("owner contract:", deployer.address);
 
 	// DEPLOY TOKEN
-	const TokenTest = await ethers.getContractFactory("TokenTest");
-	const tokenTest = await TokenTest.deploy();
+	const TokenTestFactory = await ethers.getContractFactory("TokenTest");
+	const tokenTest = await TokenTestFactory.deploy();
 	console.log("address TokenTest:", await tokenTest.getAddress());
 
 	const to = process.env.PUBLIC_ADDRESS;
