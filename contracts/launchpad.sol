@@ -36,15 +36,15 @@ contract Launchpad is Ownable, ReentrancyGuard {
 	order[] public orders;				// array dinamico di tutti gli ordini effettuati
 
 
-	constructor(ERC20 _token, uint _amount, uint256 _startLP, uint256 _endLP) {
+	constructor(ERC20 _token, uint256 _startLP, uint256 _endLP) {
 
-		require(_amount > 0, "Amount must be greater than zero");
+		// require(_amount > 0, "Amount must be greater than zero");
 		require(_startLP > 0, "StartLP must be greater than zero");
 		require(_endLP > 0, "EndLP must be greater than zero");
 		require(_startLP < _endLP, "StartLP must be less than EndLP");
 
 		token = _token;
-		totalTokenToDistribute = _amount;
+		// totalTokenToDistribute = _amount; // Non possiamo usare _amount come parametro per settare i token da distribuire, verrà settato tramite depositTokenToDistribute
 
 		startLP = _startLP;
 		endLP = _endLP;
@@ -58,6 +58,20 @@ contract Launchpad is Ownable, ReentrancyGuard {
 
 		//emit Deposit(msg.sender, msg.value, address(this).balance);
 	}
+
+	function depositTokenToDistribute(uint256 _amount) external onlyOwner {
+		require(_amount > 0, "Cannot deposit 0 tokens");										// Controllo che non si stia cercando di depositare 0 token
+		require(token.balanceOf(msg.sender) >= _amount, "Not enough tokens to deposit");		// Controllo che il mittente abbia abbastanza token per depositare
+		uint256 allowance = token.allowance(msg.sender, address(this));							// Leggo quanti token ho il permesso di movimentare
+		require(allowance >= _amount, "Check the token allowance");								// Controllo che il mittente abbia dato la allow per almeno la quantità di token indicata in amount
+
+		token.transferFrom(msg.sender, address(this), _amount);									// Trasferisco i token dal mittente al contratto
+
+		totalTokenToDistribute = totalTokenToDistribute + _amount;								// Aggiungo i token al totale dei token da distribuire
+	}
+
+
+
 
 /*
 	function depositStaker(address _staker, uint256 _amount) public payable {

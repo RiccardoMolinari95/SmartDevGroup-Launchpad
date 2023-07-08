@@ -17,13 +17,20 @@ straightforward as possible.
   PATCH Ticket title goes here.
 
 ---------------------------------------------------------------------------------------------------------
+## [0.0.4] - 07-07-2023 
+### Added
+	- [launchpool.sol] 
+		- function depositTokenToDistribute()
+	- [README.md]
+		- Operation list
+
 ## [0.0.3] - 07-07-2023 
-- Added
+### Added
 	- [launchpool.sol] 
 		- Data Structures: totalTokenToDistribute, nameTokenToDistribute, symbolTokenToDistribute, decimalsTokenToDistribute, stakingLength, startLP, endLP, TotalPower, order, orders, orderIDs
 		- event LaunchpoolCreated
 
-- Changed
+### Changed
 	- [launchpool.sol] 
 		- IERC20 to ERC20 to support of .name(), .symbol(), .decimals() functions
 		- daysStaking in stakingTime to support seconds precision
@@ -31,16 +38,13 @@ straightforward as possible.
 		Renamed TokenTest in TokenTestFactory
 
 ## [0.0.2] - 07-07-2023 
-- Added
+### Added
 	- PUBLIC_ADDRESS .env support
 	- CHANGELOG.md
-- Fixed
+### Fixed
 	- Fix prevent bug "ProviderError: invalid opcode: opcode 0x5f not defined" deploying on Mumbai
-- Changed
+### Changed
 	- Changed delpoyed TestToken contract address on Mumbai
 
 ## [0.0.1] - 07-07-2023 
 Initial release
-- Added
-- Changed
-- Fixed
