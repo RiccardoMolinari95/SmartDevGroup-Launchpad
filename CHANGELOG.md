@@ -17,6 +17,25 @@ straightforward as possible.
   PATCH Ticket title goes here.
 
 ---------------------------------------------------------------------------------------------------------
+#[0.0.6] - 09-07-2023
+### Added
+	[.envExample]
+	-URI_ALCHEMY_SEPOLIA .env support
+	-URL_ALCHEMY_MUMBAI .env support
+	[testLaunchpad.ts]
+		-describe("deposit token owner function")
+	
+### Changed
+	[hardhat.config.ts]
+		- url: `https://eth-sepolia.g.alchemy.com/v2/${ALCHEMY_KEY}` in url: process.env.URL_AlCHEMY_SEPOLIA
+		_ url: `https://eth-sepolia.g.mumbai.com/v2/${ALCHEMY_KEY}` in url: process.env.URL_AlCHEMY_MUMBAI
+	[deploy_Launchpad.ts]
+		//parametri costruttore
+		- amount in const startLP
+		- daysStaking in const endLP
+	[testTokenToDeposit.ts] in [testLaunchpad.ts]
+
+
 ## [0.0.5] - 08-07-2023
 ### Added
 	- [launchpool.sol] 
