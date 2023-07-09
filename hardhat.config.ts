@@ -17,8 +17,6 @@ task("flat", "Flattens and prints contracts and their dependencies (Resolves lic
     console.log(flattened);
   });
 
- const ALCHEMY_API_KEY = process.env.ALCHEMY_API_KEY;
-
 const config: HardhatUserConfig = {
 
   // defaultNetwork: "sepolia",
@@ -28,15 +26,15 @@ const config: HardhatUserConfig = {
     // localhost: {
     //   url: "http://127.0.0.1:8545"
     // },
-      polygon_mumbai: {
-      url: `https://polygon-mumbai.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
-      accounts: [process.env.PRIVATE_KEY ?? ""]
-    },
-    // sepolia: {
-    //   url: `https://rpc.sepolia.org/`,
-    //   accounts: [process.env.PRIVATE_KEY ?? ""],
-    //   chainId: 11155111,
-    // },
+       polygon_mumbai: {
+       url: process.env.URL_AlCHEMY_MUMBAI,
+       accounts: [process.env.PRIVATE_KEY ?? ""]
+     },
+     sepolia: {
+       url: process.env.URL_AlCHEMY_SEPOLIA,
+       accounts: [process.env.PRIVATE_KEY ?? ""],
+       chainId: 11155111,
+     },
   },
   // etherscan: {
   //   apiKey: process.env.POLYGONSCAN_API_KEY
