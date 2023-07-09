@@ -78,10 +78,7 @@ contract Launchpad is Ownable, ReentrancyGuard {
         //emit Deposit(msg.sender, msg.value, address(this).balance);
     }
 
-    function depositTokenToDistribute(
-        uint256 _amount
-    ) external payable onlyOwner {
-        //la funzione deve essere payable per funzionare
+    function depositTokenToDistribute(uint256 _amount) external onlyOwner {
         require(_amount > 0, "Cannot deposit 0 tokens"); // Controllo che non si stia cercando di depositare 0 token
         require(
             token.balanceOf(msg.sender) >= _amount,
