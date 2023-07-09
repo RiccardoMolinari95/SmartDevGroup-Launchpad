@@ -8,11 +8,11 @@ async function main() {
   const Launchpad = await ethers.getContractFactory("Launchpad");
   
   //parametri costruttore
-  const tokenAddress = "0x58728B801b6A01BE4B42133Bd77CfDa543e23b67"; 
-  const amount = ethers.parseEther("100");
-  const daysStaking = 30;
+  const tokenAddress = "0x6Ff87b10063595CFDA763391510974C674Bf09f1"; //inserire token Address
+  const startLP = 1 //inzio lp
+  const endLP = 30; //fine lp
 
-  const launchpad = await Launchpad.deploy(tokenAddress, amount, daysStaking);
+  const launchpad = await Launchpad.deploy(tokenAddress, startLP  , endLP);
 
   console.log("address Launchpad:", await launchpad.getAddress());
 }
