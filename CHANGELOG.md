@@ -17,6 +17,11 @@ straightforward as possible.
   PATCH Ticket title goes here.
 
 ---------------------------------------------------------------------------------------------------------
+# [0.0.12] - 10-07-2023
+### Changed
+	- [launchpool.sol]
+		- Fix for lauchpool time setter
+		- Create event launchpool period
 # [0.0.11] - 10-07-2023
 ### Changed
 	- [launchpool.sol]

@@ -28,6 +28,10 @@ contract Launchpad is Ownable, ReentrancyGuard {
 		uint256 power,
 		uint256 totalPower
 	);
+	event newLaunchpoolPeriod(
+		uint256 start,
+		uint256 end
+	);
 
 
 	uint256 public totalTokenToDistribute; // contatore Token ancora da distribuire
@@ -52,9 +56,6 @@ contract Launchpad is Ownable, ReentrancyGuard {
 
 	// MODIFIERS
 	modifier checkLaunchpoolStart() {
-
-		console.log("Block timestamp {}", block.timestamp);
-		console.log("Launchpool start {}", startLP);
 
 		require(block.timestamp < startLP, "Launchpool is already running");
 		_;
@@ -175,9 +176,9 @@ contract Launchpad is Ownable, ReentrancyGuard {
 		return totalStaked;
 	}
 
-	function setStartLP(uint256 _newStartLP) public onlyOwner checkLaunchpoolStart {
+	function setStartLP(uint256 _newStartLP) public onlyOwner {
 
-		require(_newStartLP > 0, "New EndLP must be greater than 0");
+		require(_newStartLP > block.timestamp, "New StartLP must be greater than now");
 		require(_newStartLP < endLP , "New startLP must be less than endLP");
 
 		startLP = _newStartLP;
@@ -186,9 +187,9 @@ contract Launchpad is Ownable, ReentrancyGuard {
 
 	}
 
-	function setEndLP(uint256 _newEndLP) public onlyOwner checkLaunchpoolStart {
+	function setEndLP(uint256 _newEndLP) public onlyOwner {
 
-		require(_newEndLP > 0, "New EndLP must be greater than 0");
+		require(_newEndLP > block.timestamp, "New EndLP must be greater than now");
 		require(_newEndLP > startLP , "New EndLP must be greater than startLP");
 
 		endLP = _newEndLP;
@@ -197,11 +198,14 @@ contract Launchpad is Ownable, ReentrancyGuard {
 		
 	}
 
-	function _setNewStakingLenght(uint256 _start, uint256 _end) public onlyOwner {
+	function _setNewStakingLenght(uint256 _start, uint256 _end) internal checkLaunchpoolStart {
 
 		stakingLength = _end - _start;
 
-		console.log("New Staking lenght is {}", stakingLength);
+        emit newLaunchpoolPeriod(
+			_start,
+			_end
+		);
 	}
 
 }
