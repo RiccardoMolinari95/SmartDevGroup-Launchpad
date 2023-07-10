@@ -17,7 +17,14 @@ straightforward as possible.
   PATCH Ticket title goes here.
 
 ---------------------------------------------------------------------------------------------------------
-#[0.0.6] - 09-07-2023
+# [0.0.7] - 09-07-2023
+### Changed
+	- [.envExample] e [hardhat.config.ts]
+		- minor fix
+	- [launchpool.sol], [tokenTest.sol], [testLaunchpad.ts], [deploy_Launchpad.ts]
+		- Indentation with tabs
+
+# [0.0.6] - 09-07-2023
 ### Added
 	[.envExample]
 	-URI_ALCHEMY_SEPOLIA .env support
