@@ -28,17 +28,16 @@ contract Launchpad is Ownable, ReentrancyGuard {
 		uint256 power,
 		uint256 totalPower
 	);
-	//event TokensDeposited(address sender, uint256 amount, uint256 balance, uint256 daysStaking);
-	//event Deposit(address indexed sender, uint amount, uint balance);
 
-	uint256 totalTokenToDistribute; // contatore Token ancora da distribuire
+
+	uint256 public totalTokenToDistribute; // contatore Token ancora da distribuire
 	string nameTokenToDistribute; // nome Token ERC-20 da distribuire
 	string symbolTokenToDistribute; // symbolo Token ERC-20 da distribuire
 	uint256 decimalsTokenToDistribute; // decimali Token ERC-20 da distribuire
-	uint256 stakingLength; // lunghezza in secondi del periodo di staking
-	uint256 startLP; // timestamp inizio launchpool
-	uint256 endLP; // timestamp inizio launchpool
-	uint256 TotalPower = 0; // ad ogni commit TotalPower = TotalPower + orderPower;
+	uint256 public stakingLength; // lunghezza in secondi del periodo di staking
+	uint256 public startLP; // timestamp inizio launchpool
+	uint256 public endLP; // timestamp inizio launchpool
+	uint256 public TotalPower = 0; // ad ogni commit TotalPower = TotalPower + orderPower;
 
 	mapping(address => uint256[]) public orderIDs; // associa ogni ordine di staking all'address che lo ha effettuato
 
@@ -73,7 +72,6 @@ contract Launchpad is Ownable, ReentrancyGuard {
 			stakingLength
 		);
 
-		//emit Deposit(msg.sender, msg.value, address(this).balance);
 	}
 
 	function depositTokenToDistribute(uint256 _amount) external onlyOwner {
@@ -93,6 +91,7 @@ contract Launchpad is Ownable, ReentrancyGuard {
 	}
 
 	function stake() public payable {
+
 		console.log("msg.value: ", msg.value);
 		console.log("startLP: ", startLP);
 		console.log("endLP: ", endLP);
@@ -122,6 +121,11 @@ contract Launchpad is Ownable, ReentrancyGuard {
 
 		// Aggiorno il totale dei power
 		TotalPower = TotalPower + senderOrder.power; // Aggiungo il power al totale dei power
+
+		console.log("senderOrder.stakedAmount: ", senderOrder.stakedAmount);
+		console.log("senderOrder.orderTime: ", senderOrder.orderTime);
+		console.log("senderOrder.power: ", senderOrder.power);
+		console.log("New TotalPower: ", TotalPower);
 
 		emit newStakeOrder(
 			msg.sender,

@@ -17,7 +17,16 @@ straightforward as possible.
   PATCH Ticket title goes here.
 
 ---------------------------------------------------------------------------------------------------------
-# [0.0.8] - 09-07-2023
+# [0.0.9] - 10-07-2023
+### Added
+	- [launchpool.sol]
+		more console.log() in stake()
+### Changed
+	- [launchpool.sol]
+		- to public: totalTokenToDistribute, stakingLength, startLP, endLP
+
+
+# [0.0.8] - 10-07-2023
 ### Added
 	- [launchpool.sol]
 		- Getters functions: getMyOrders(), getMyTotalStaked(), getUserOrders(), getUserTotalStaked()
