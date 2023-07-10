@@ -17,6 +17,14 @@ straightforward as possible.
   PATCH Ticket title goes here.
 
 ---------------------------------------------------------------------------------------------------------
+# [0.0.8] - 09-07-2023
+### Added
+	- [launchpool.sol]
+		- Getters functions: getMyOrders(), getMyTotalStaked(), getUserOrders(), getUserTotalStaked()
+### Changed
+	- [launchpool.sol]
+		- Modificato mapping orderIDs da (uint256, address) a (address, uint256[])
+
 # [0.0.7] - 09-07-2023
 ### Changed
 	- [.envExample] e [hardhat.config.ts]

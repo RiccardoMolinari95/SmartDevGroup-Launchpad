@@ -114,8 +114,10 @@ contract Launchpad is Ownable, ReentrancyGuard {
 		senderOrder.power = senderOrder.stakedAmount * (senderOrder.orderTime - startLP); // Calcolo il power dell'ordine
 		senderOrder.isClaimed = false; // Assegno il valore false al claim
 
+		// Inserisco l'order nella lista degli order
 		orders.push(senderOrder); // Aggiungo l'ordine all'array degli ordini
 
+		// Assegno l'order all'address che ha effettuato lo stake
 		orderIDs[msg.sender].push(orderID); // Associo l'ID dell'ordine all'address che ha effettuato lo stake
 
 		// Aggiorno il totale dei power
@@ -128,4 +130,32 @@ contract Launchpad is Ownable, ReentrancyGuard {
 			TotalPower
 		);
 	}
+
+	// GETTERs & SETTERs
+	function getMyOrders() public view returns (uint256[] memory)
+	{
+		return orderIDs[msg.sender];
+	}
+
+	function getMyTotalStaked() public view returns (uint256) {
+		uint256 totalStaked = 0;
+		for (uint256 i = 0; i < orderIDs[msg.sender].length; i++) {
+			totalStaked = totalStaked + orders[orderIDs[msg.sender][i]].stakedAmount;
+		}
+		return totalStaked;
+	}
+	function getUserOrders(address _user) public view returns (uint256[] memory)
+	{
+		return orderIDs[_user];
+	}
+
+	function getUserTotalStaked(address _user) public view returns (uint256) {
+		uint256 totalStaked = 0;
+		for (uint256 i = 0; i < orderIDs[_user].length; i++) {
+			totalStaked = totalStaked + orders[orderIDs[_user][i]].stakedAmount;
+		}
+		return totalStaked;
+	}
+
+
 }
