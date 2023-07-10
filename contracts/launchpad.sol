@@ -40,7 +40,7 @@ contract Launchpad is Ownable, ReentrancyGuard {
 	uint256 endLP; // timestamp inizio launchpool
 	uint256 TotalPower = 0; // ad ogni commit TotalPower = TotalPower + orderPower;
 
-	mapping(uint256 => address) public orderIDs; // associa ogni ordine di staking all'address che lo ha effettuato
+	mapping(address => uint256[]) public orderIDs; // associa ogni ordine di staking all'address che lo ha effettuato
 
 	struct Order {
 		uint256 stakedAmount; // quantità di coin/token staked
@@ -52,13 +52,11 @@ contract Launchpad is Ownable, ReentrancyGuard {
 	Order[] public orders; // array dinamico di tutti gli ordini effettuati
 
 	constructor(ERC20 _token, uint256 _startLP, uint256 _endLP) {
-		// require(_amount > 0, "Amount must be greater than zero");
 		require(_startLP > 0, "StartLP must be greater than zero");
 		require(_endLP > 0, "EndLP must be greater than zero");
 		require(_startLP < _endLP, "StartLP must be less than EndLP");
 
 		token = _token;
-		// totalTokenToDistribute = _amount; // Non possiamo usare _amount come parametro per settare i token da distribuire, verrà settato tramite depositTokenToDistribute
 
 		startLP = _startLP;
 		endLP = _endLP;
@@ -116,11 +114,9 @@ contract Launchpad is Ownable, ReentrancyGuard {
 		senderOrder.power = senderOrder.stakedAmount * (senderOrder.orderTime - startLP); // Calcolo il power dell'ordine
 		senderOrder.isClaimed = false; // Assegno il valore false al claim
 
-		// Inserisco l'order nella lista degli order
 		orders.push(senderOrder); // Aggiungo l'ordine all'array degli ordini
 
-		// Assegno l'order all'address che ha effettuato lo stake
-		orderIDs[orderID] = msg.sender; // Associo l'ID dell'ordine all'address che ha effettuato lo stake
+		orderIDs[msg.sender].push(orderID); // Associo l'ID dell'ordine all'address che ha effettuato lo stake
 
 		// Aggiorno il totale dei power
 		TotalPower = TotalPower + senderOrder.power; // Aggiungo il power al totale dei power
