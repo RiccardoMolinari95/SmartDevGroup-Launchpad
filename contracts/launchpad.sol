@@ -93,8 +93,8 @@ contract Launchpad is Ownable, ReentrancyGuard {
 	function stake() public payable {
 
 		console.log("msg.value: ", msg.value);
-		console.log("startLP: ", startLP);
-		console.log("endLP: ", endLP);
+		//console.log("startLP: ", startLP);
+		//console.log("endLP: ", endLP);
 		console.log("block.timestamp: ", block.timestamp);
 		console.log("totalTokenToDistribute: ", totalTokenToDistribute);
 
@@ -110,7 +110,7 @@ contract Launchpad is Ownable, ReentrancyGuard {
 		Order memory senderOrder; // Creo un nuovo ordine
 		senderOrder.stakedAmount = uint256(msg.value); // Assegno la quantità di MATIC staked
 		senderOrder.orderTime = block.timestamp; // Assegno il timestamp dell'ordine
-		senderOrder.power = senderOrder.stakedAmount * (senderOrder.orderTime - startLP); // Calcolo il power dell'ordine
+		senderOrder.power = senderOrder.stakedAmount * (endLP - senderOrder.orderTime); // Calcolo il power dell'ordine
 		senderOrder.isClaimed = false; // Assegno il valore false al claim
 
 		// Inserisco l'order nella lista degli order
@@ -123,8 +123,12 @@ contract Launchpad is Ownable, ReentrancyGuard {
 		TotalPower = TotalPower + senderOrder.power; // Aggiungo il power al totale dei power
 
 		console.log("senderOrder.stakedAmount: ", senderOrder.stakedAmount);
+		console.log("endLP: ", endLP);
 		console.log("senderOrder.orderTime: ", senderOrder.orderTime);
+		console.log("(endLP - senderOrder.orderTime) = ", (endLP - senderOrder.orderTime));
+		console.log(senderOrder.stakedAmount, " *  ", (endLP - senderOrder.orderTime), " = ");
 		console.log("senderOrder.power: ", senderOrder.power);
+
 		console.log("New TotalPower: ", TotalPower);
 
 		emit newStakeOrder(

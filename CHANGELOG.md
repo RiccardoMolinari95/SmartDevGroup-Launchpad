@@ -17,6 +17,10 @@ straightforward as possible.
   PATCH Ticket title goes here.
 
 ---------------------------------------------------------------------------------------------------------
+# [0.0.10] - 10-07-2023
+### Changed
+	- [launchpool.sol]
+		- fixed wrong formula ( senderOrder.power = senderOrder.stakedAmount * (senderOrder.orderTime - startLP) ) to new correct formula ( senderOrder.power = senderOrder.stakedAmount * (endLP - senderOrder.orderTime) )
 # [0.0.9] - 10-07-2023
 ### Added
 	- [launchpool.sol]
@@ -24,7 +28,6 @@ straightforward as possible.
 ### Changed
 	- [launchpool.sol]
 		- to public: totalTokenToDistribute, stakingLength, startLP, endLP
-
 
 # [0.0.8] - 10-07-2023
 ### Added
