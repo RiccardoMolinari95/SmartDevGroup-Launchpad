@@ -50,6 +50,16 @@ contract Launchpad is Ownable, ReentrancyGuard {
 
 	Order[] public orders; // array dinamico di tutti gli ordini effettuati
 
+	// MODIFIERS
+	modifier checkLaunchpoolStart() {
+
+		console.log("Block timestamp {}", block.timestamp);
+		console.log("Launchpool start {}", startLP);
+
+		require(block.timestamp < startLP, "Launchpool is already running");
+		_;
+	}
+
 	constructor(ERC20 _token, uint256 _startLP, uint256 _endLP) {
 		require(_startLP > 0, "StartLP must be greater than zero");
 		require(_endLP > 0, "EndLP must be greater than zero");
@@ -165,5 +175,33 @@ contract Launchpad is Ownable, ReentrancyGuard {
 		return totalStaked;
 	}
 
+	function setStartLP(uint256 _newStartLP) public onlyOwner checkLaunchpoolStart {
+
+		require(_newStartLP > 0, "New EndLP must be greater than 0");
+		require(_newStartLP < endLP , "New startLP must be less than endLP");
+
+		startLP = _newStartLP;
+
+		_setNewStakingLenght(startLP, endLP);
+
+	}
+
+	function setEndLP(uint256 _newEndLP) public onlyOwner checkLaunchpoolStart {
+
+		require(_newEndLP > 0, "New EndLP must be greater than 0");
+		require(_newEndLP > startLP , "New EndLP must be greater than startLP");
+
+		endLP = _newEndLP;
+
+		_setNewStakingLenght(startLP, endLP);
+		
+	}
+
+	function _setNewStakingLenght(uint256 _start, uint256 _end) public onlyOwner {
+
+		stakingLength = _end - _start;
+
+		console.log("New Staking lenght is {}", stakingLength);
+	}
 
 }

@@ -17,6 +17,11 @@ straightforward as possible.
   PATCH Ticket title goes here.
 
 ---------------------------------------------------------------------------------------------------------
+# [0.0.11] - 10-07-2023
+### Changed
+	- [launchpool.sol]
+		- Create setter to change start and end of launchpool
+		- Create modifier to check id launchpool is started
 # [0.0.10] - 10-07-2023
 ### Changed
 	- [launchpool.sol]
