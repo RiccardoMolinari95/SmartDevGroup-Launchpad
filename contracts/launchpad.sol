@@ -55,11 +55,22 @@ contract Launchpad is Ownable, ReentrancyGuard {
 	Order[] public orders; // array dinamico di tutti gli ordini effettuati
 
 	// MODIFIERS
-	modifier checkLaunchpoolStart() {
-
+	modifier launchpoolNotStarted() {
 		require(block.timestamp < startLP, "Launchpool is already running");
 		_;
 	}
+
+	modifier launchpoolStarted() {
+		require(block.timestamp >= startLP, "Launchpool is not running");
+		_;
+	}
+
+	modifier launchpoolNotEnded() {
+		require(block.timestamp < endLP, "Launchpool is ended");
+		_;
+	}
+
+
 
 	constructor(ERC20 _token, uint256 _startLP, uint256 _endLP) {
 		require(_startLP > 0, "StartLP must be greater than zero");
@@ -85,7 +96,7 @@ contract Launchpad is Ownable, ReentrancyGuard {
 
 	}
 
-	function depositTokenToDistribute(uint256 _amount) external onlyOwner {
+	function depositTokenToDistribute(uint256 _amount) external onlyOwner launchpoolNotStarted {
 		require(_amount > 0, "Cannot deposit 0 tokens"); // Controllo che non si stia cercando di depositare 0 token
 		require(
 			token.balanceOf(msg.sender) >= _amount,
@@ -101,17 +112,9 @@ contract Launchpad is Ownable, ReentrancyGuard {
 		emit tokenToDistributeDeposit(_amount, totalTokenToDistribute);
 	}
 
-	function stake() public payable {
-
-		console.log("msg.value: ", msg.value);
-		//console.log("startLP: ", startLP);
-		//console.log("endLP: ", endLP);
-		console.log("block.timestamp: ", block.timestamp);
-		console.log("totalTokenToDistribute: ", totalTokenToDistribute);
+	function stake() public payable launchpoolStarted launchpoolNotEnded {
 
 		require(msg.value > 0, "Cannot stake 0 MATIC"); // Controllo che non si stia cercando di depositare 0 MATIC
-		require(block.timestamp >= startLP, "Launchpool not started yet"); // Controllo che il launchpool sia iniziato
-		require(block.timestamp <= endLP, "Launchpool ended"); // Controllo che il launchpool non sia ancora finito
 		require(totalTokenToDistribute > 0, "No tokens to distribute"); // Controllo che ci siano ancora token da distribuire
 
 		uint256 orderID = orders.length; // Assegno l'ID dell'ordine
@@ -139,7 +142,6 @@ contract Launchpad is Ownable, ReentrancyGuard {
 		console.log("(endLP - senderOrder.orderTime) = ", (endLP - senderOrder.orderTime));
 		console.log(senderOrder.stakedAmount, " *  ", (endLP - senderOrder.orderTime), " = ");
 		console.log("senderOrder.power: ", senderOrder.power);
-
 		console.log("New TotalPower: ", TotalPower);
 
 		emit newStakeOrder(
@@ -176,7 +178,7 @@ contract Launchpad is Ownable, ReentrancyGuard {
 		return totalStaked;
 	}
 
-	function setStartLP(uint256 _newStartLP) public onlyOwner {
+	function setStartLP(uint256 _newStartLP) public onlyOwner launchpoolNotStarted {
 
 		require(_newStartLP > block.timestamp, "New StartLP must be greater than now");
 		require(_newStartLP < endLP , "New startLP must be less than endLP");
@@ -187,7 +189,7 @@ contract Launchpad is Ownable, ReentrancyGuard {
 
 	}
 
-	function setEndLP(uint256 _newEndLP) public onlyOwner {
+	function setEndLP(uint256 _newEndLP) public onlyOwner launchpoolNotStarted {
 
 		require(_newEndLP > block.timestamp, "New EndLP must be greater than now");
 		require(_newEndLP > startLP , "New EndLP must be greater than startLP");
@@ -198,7 +200,7 @@ contract Launchpad is Ownable, ReentrancyGuard {
 		
 	}
 
-	function _setNewStakingLenght(uint256 _start, uint256 _end) internal checkLaunchpoolStart {
+	function _setNewStakingLenght(uint256 _start, uint256 _end) internal launchpoolNotStarted {
 
 		stakingLength = _end - _start;
 

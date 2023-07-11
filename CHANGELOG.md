@@ -17,6 +17,13 @@ straightforward as possible.
   PATCH Ticket title goes here.
 
 ---------------------------------------------------------------------------------------------------------
+# [0.0.13] - 11-07-2023
+### Added
+	- [launchpool.sol]
+		- modifiers launchpoolStarted() e launchpoolNotEnded()
+### Changed
+	- [launchpool.sol]
+		- renamed modifier checkLaunchpoolStart() to launchpoolNotStarted()
 # [0.0.12] - 10-07-2023
 ### Changed
 	- [launchpool.sol]
